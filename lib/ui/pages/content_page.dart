@@ -11,14 +11,14 @@ class ContentPage extends StatefulWidget {
 
 class _State extends State<ContentPage> {
   late TextEditingController _controller;
-  late RealTimeDatabase databaseService;
+  late FirestoreDatabase databaseService;
   List<ToDo> todos = [];
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    databaseService = RealTimeDatabase();
+    databaseService = FirestoreDatabase();
     databaseService.readAll().then((value) {
       print(value);
       setState(() {

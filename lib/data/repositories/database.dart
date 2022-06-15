@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mintic_un_todo_core/data/entities/to_do.dart';
 import 'package:mintic_un_todo_core/domain/models/to_do.dart';
 
-class RealTimeDatabase {
+class FirestoreDatabase {
   CollectionReference<Map<String, dynamic>> get database =>
       FirebaseFirestore.instance.collection("to-do_list");
 
