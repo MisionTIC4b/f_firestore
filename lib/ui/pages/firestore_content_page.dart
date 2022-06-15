@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:mintic_un_todo_core/domain/models/to_do.dart';
 import 'package:misiontic_todo/data/repositories/database.dart';
 
-class ContentPage extends StatefulWidget {
-  const ContentPage({Key? key}) : super(key: key);
+class FirestoreContentPage extends StatefulWidget {
+  const FirestoreContentPage({Key? key}) : super(key: key);
 
   @override
   createState() => _State();
 }
 
-class _State extends State<ContentPage> {
+class _State extends State<FirestoreContentPage> {
   late TextEditingController _controller;
   late RealTimeDatabase databaseService;
   List<ToDo> todos = [];
@@ -19,10 +19,9 @@ class _State extends State<ContentPage> {
     super.initState();
     _controller = TextEditingController();
     databaseService = RealTimeDatabase();
-    databaseService.readAll().then((value) {
-      print(value);
+    databaseService.toDoStream.listen((data) {
       setState(() {
-        todos = value;
+        todos = data;
       });
     });
   }
@@ -55,10 +54,7 @@ class _State extends State<ContentPage> {
                       onPressed: () {
                         final toDo = ToDo(content: _controller.text);
                         databaseService.save(data: toDo).then((_) {
-                          setState(() {
-                            _controller.clear();
-                            todos.add(toDo);
-                          });
+                          _controller.clear();
                         });
                       },
                       child: const Text("Aceptar"))
@@ -84,22 +80,14 @@ class _State extends State<ContentPage> {
                             ),
                             onPressed: () {
                               toDo.completed = true;
-                              databaseService.update(data: toDo).then((value) {
-                                setState(() {
-                                  todos[index] = toDo;
-                                });
-                              });
+                              databaseService.update(data: toDo);
                             },
                           ),
                         ),
                         title: Text(toDo.content),
                         trailing: IconButton(
                           onPressed: () {
-                            databaseService.delete(uuid: toDo.uuid).then((_) {
-                              setState(() {
-                                todos.removeAt(index);
-                              });
-                            });
+                            databaseService.delete(uuid: toDo.uuid);
                           },
                           icon: const Icon(
                             Icons.delete_forever_rounded,
@@ -114,11 +102,7 @@ class _State extends State<ContentPage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.delete_sweep_rounded),
         onPressed: () {
-          databaseService.clear(toDos: todos).then((_) {
-            setState(() {
-              todos.clear();
-            });
-          });
+          databaseService.clear(toDos: todos);
         },
       ),
     );
