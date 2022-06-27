@@ -11,13 +11,13 @@ class ContentPage extends StatefulWidget {
 }
 
 class _State extends State<ContentPage> {
-  late TextEditingController _controller;
+  late TextEditingController _textController;
   late DatabaseController controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _textController = TextEditingController();
     controller = Get.find();
     controller.readAll().then((value) {
       setState(() {
@@ -41,7 +41,7 @@ class _State extends State<ContentPage> {
                 children: [
                   Expanded(
                     child: TextField(
-                      controller: _controller,
+                      controller: _textController,
                       decoration: const InputDecoration(
                         hintText: "Nuevo To-Do",
                       ),
@@ -52,10 +52,10 @@ class _State extends State<ContentPage> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        final toDo = ToDo(content: _controller.text);
+                        final toDo = ToDo(content: _textController.text);
                         controller.saveToDo(data: toDo).then((_) {
                           setState(() {
-                            _controller.clear();
+                            _textController.clear();
                             controller.toDos.add(toDo);
                           });
                         });

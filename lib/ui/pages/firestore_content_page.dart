@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mintic_un_todo_core/domain/models/to_do.dart';
-import 'package:misiontic_todo/data/repositories/database.dart';
 import 'package:misiontic_todo/ui/controllers/database.dart';
 
 class FirestoreContentPage extends StatefulWidget {
@@ -12,13 +11,13 @@ class FirestoreContentPage extends StatefulWidget {
 }
 
 class _State extends State<FirestoreContentPage> {
-  late TextEditingController _controller;
+  late TextEditingController _textController;
   late DatabaseController controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _textController = TextEditingController();
     controller = Get.find();
     controller.toDoStream.listen((data) {
       setState(() {
@@ -42,7 +41,7 @@ class _State extends State<FirestoreContentPage> {
                 children: [
                   Expanded(
                     child: TextField(
-                      controller: _controller,
+                      controller: _textController,
                       decoration: const InputDecoration(
                         hintText: "Nuevo To-Do",
                       ),
@@ -53,9 +52,9 @@ class _State extends State<FirestoreContentPage> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        final toDo = ToDo(content: _controller.text);
+                        final toDo = ToDo(content: _textController.text);
                         controller.saveToDo(data: toDo).then((_) {
-                          _controller.clear();
+                          _textController.clear();
                         });
                       },
                       child: const Text("Aceptar"))
