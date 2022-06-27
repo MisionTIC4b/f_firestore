@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mintic_un_todo_core/domain/models/to_do.dart';
-import 'package:misiontic_todo/data/repositories/database.dart';
+import 'package:misiontic_todo/ui/controllers/database.dart';
 
 class ContentPage extends StatefulWidget {
   const ContentPage({Key? key}) : super(key: key);
@@ -11,18 +12,16 @@ class ContentPage extends StatefulWidget {
 
 class _State extends State<ContentPage> {
   late TextEditingController _controller;
-  late FirestoreDatabase databaseService;
-  List<ToDo> todos = [];
+  late DatabaseController controller;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    databaseService = FirestoreDatabase();
-    databaseService.readAll().then((value) {
-      print(value);
+    controller = Get.find();
+    controller.readAll().then((value) {
       setState(() {
-        todos = value;
+        controller.toDos = value;
       });
     });
   }
@@ -31,7 +30,7 @@ class _State extends State<ContentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Lista de ToDos"),
+        title: const Text("Lista de controller.toDos"),
       ),
       body: SafeArea(
         child: Column(
@@ -54,10 +53,10 @@ class _State extends State<ContentPage> {
                   ElevatedButton(
                       onPressed: () {
                         final toDo = ToDo(content: _controller.text);
-                        databaseService.save(data: toDo).then((_) {
+                        controller.saveToDo(data: toDo).then((_) {
                           setState(() {
                             _controller.clear();
-                            todos.add(toDo);
+                            controller.toDos.add(toDo);
                           });
                         });
                       },
@@ -68,9 +67,9 @@ class _State extends State<ContentPage> {
             Expanded(
                 child: ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    itemCount: todos.length,
+                    itemCount: controller.toDos.length,
                     itemBuilder: (ontext, index) {
-                      final toDo = todos[index];
+                      final toDo = controller.toDos[index];
                       return ListTile(
                         leading: AbsorbPointer(
                           absorbing: toDo.completed,
@@ -84,9 +83,9 @@ class _State extends State<ContentPage> {
                             ),
                             onPressed: () {
                               toDo.completed = true;
-                              databaseService.update(data: toDo).then((value) {
+                              controller.updateToDo(data: toDo).then((value) {
                                 setState(() {
-                                  todos[index] = toDo;
+                                  controller.toDos[index] = toDo;
                                 });
                               });
                             },
@@ -95,9 +94,9 @@ class _State extends State<ContentPage> {
                         title: Text(toDo.content),
                         trailing: IconButton(
                           onPressed: () {
-                            databaseService.delete(uuid: toDo.uuid).then((_) {
+                            controller.deleteToDo(uuid: toDo.uuid).then((_) {
                               setState(() {
-                                todos.removeAt(index);
+                                controller.toDos.removeAt(index);
                               });
                             });
                           },
@@ -114,9 +113,9 @@ class _State extends State<ContentPage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.delete_sweep_rounded),
         onPressed: () {
-          databaseService.clear(toDos: todos).then((_) {
+          controller.clear(controller.toDos).then((_) {
             setState(() {
-              todos.clear();
+              controller.toDos.clear();
             });
           });
         },

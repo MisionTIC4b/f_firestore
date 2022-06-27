@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mintic_un_todo_core/domain/models/to_do.dart';
 import 'package:misiontic_todo/data/repositories/database.dart';
+import 'package:misiontic_todo/ui/controllers/database.dart';
 
 class FirestoreContentPage extends StatefulWidget {
   const FirestoreContentPage({Key? key}) : super(key: key);
@@ -11,17 +13,16 @@ class FirestoreContentPage extends StatefulWidget {
 
 class _State extends State<FirestoreContentPage> {
   late TextEditingController _controller;
-  late FirestoreDatabase databaseService;
-  List<ToDo> todos = [];
+  late DatabaseController controller;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-    databaseService = FirestoreDatabase();
-    databaseService.toDoStream.listen((data) {
+    controller = Get.find();
+    controller.toDoStream.listen((data) {
       setState(() {
-        todos = data;
+        controller.toDos = data;
       });
     });
   }
@@ -30,7 +31,7 @@ class _State extends State<FirestoreContentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Lista de ToDos"),
+        title: const Text("Lista de controller.toDos"),
       ),
       body: SafeArea(
         child: Column(
@@ -53,7 +54,7 @@ class _State extends State<FirestoreContentPage> {
                   ElevatedButton(
                       onPressed: () {
                         final toDo = ToDo(content: _controller.text);
-                        databaseService.save(data: toDo).then((_) {
+                        controller.saveToDo(data: toDo).then((_) {
                           _controller.clear();
                         });
                       },
@@ -64,9 +65,9 @@ class _State extends State<FirestoreContentPage> {
             Expanded(
                 child: ListView.builder(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    itemCount: todos.length,
+                    itemCount: controller.toDos.length,
                     itemBuilder: (ontext, index) {
-                      final toDo = todos[index];
+                      final toDo = controller.toDos[index];
                       return ListTile(
                         leading: AbsorbPointer(
                           absorbing: toDo.completed,
@@ -80,14 +81,14 @@ class _State extends State<FirestoreContentPage> {
                             ),
                             onPressed: () {
                               toDo.completed = true;
-                              databaseService.update(data: toDo);
+                              controller.updateToDo(data: toDo);
                             },
                           ),
                         ),
                         title: Text(toDo.content),
                         trailing: IconButton(
                           onPressed: () {
-                            databaseService.delete(uuid: toDo.uuid);
+                            controller.deleteToDo(uuid: toDo.uuid);
                           },
                           icon: const Icon(
                             Icons.delete_forever_rounded,
@@ -102,7 +103,7 @@ class _State extends State<FirestoreContentPage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.delete_sweep_rounded),
         onPressed: () {
-          databaseService.clear(toDos: todos);
+          controller.clear(controller.toDos);
         },
       ),
     );
