@@ -1,16 +1,9 @@
-# misiontic_todo
+# ToDo App con Firebase Firestore
 
-A new Flutter project.
+![Todo Firestore](https://user-images.githubusercontent.com/25647254/178128140-ffe2d7a3-897c-4def-8fd6-a788643e8bcd.gif)
 
-## Getting Started
+En este ejemplo se usa Firebase RealTime para implementar la aplicacion de ToDo.
 
-This project is a starting point for a Flutter application.
+## Recursos
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Firebase Firestore: https://firebase.google.com/docs/firestore/quickstart
