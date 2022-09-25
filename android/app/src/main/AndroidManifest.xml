@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.misiontic_todo">
+    package="com.example.f_firestore">
    <application
-        android:label="misiontic_todo"
+        android:label="f_firestore"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

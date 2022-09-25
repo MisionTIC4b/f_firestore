@@ -1,4 +1,4 @@
-package com.example.misiontic_todo
+package com.example.f_firestore
 
 import io.flutter.embedding.android.FlutterActivity
 

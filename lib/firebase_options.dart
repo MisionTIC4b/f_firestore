@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCDT6OTWWDQj56FBrLWDeg0WZX24Y67J-8',
-    appId: '1:89824530751:android:0e4572e1c08809646dc38a',
+    appId: '1:89824530751:android:61da8bb102d2a96f6dc38a',
     messagingSenderId: '89824530751',
     projectId: 'misiontic-4b',
     databaseURL: 'https://misiontic-4b-default-rtdb.firebaseio.com',
@@ -60,12 +60,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC9fDNSb8rY14XaXQxkpTtG96QFnqugRao',
-    appId: '1:89824530751:ios:b0b6416e9e8b42286dc38a',
+    appId: '1:89824530751:ios:110278e6c7c8f6a86dc38a',
     messagingSenderId: '89824530751',
     projectId: 'misiontic-4b',
     databaseURL: 'https://misiontic-4b-default-rtdb.firebaseio.com',
     storageBucket: 'misiontic-4b.appspot.com',
-    iosClientId: '89824530751-jiihgfbpkqt1ouuhgvk33h6nvvppjj2o.apps.googleusercontent.com',
-    iosBundleId: 'com.example.misionticTodo',
+    iosClientId: '89824530751-6hqm1mcmr5svqk6u0niodabjcc986eo8.apps.googleusercontent.com',
+    iosBundleId: 'com.example.fFirestore',
   );
 }
